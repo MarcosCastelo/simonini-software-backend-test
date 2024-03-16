@@ -6,6 +6,7 @@ export class UserRepository implements IUserRepository {
   async createUser(user: User): Promise<User> {
     const createdUser = await prisma.user.create({
       data: {
+        id: user.id,
         name: user.name,
         email: user.email,
         password: user.password
@@ -13,10 +14,10 @@ export class UserRepository implements IUserRepository {
     })
 
     return new User(
-      createdUser.id,
       createdUser.name,
       createdUser.email,
       createdUser.password,
+      createdUser.id
     )
   }
 

@@ -1,14 +1,12 @@
 import { IPostRepository } from "../../../../../src/resources/post/ports/IPostRepository"
 import { CreatePost } from "../../../../../src/resources/post/useCases/CreatePost"
-import { Post } from "../../../../../src/resources/post/entities/Post"
 import { IValidator } from "../../../../../src/core/interfaces/IValidator"
-import { IIdGenerator } from "../../../../../src/core/interfaces/IIdGenerator"
+import { Post } from "../../../../../src/resources/post/entities/Post"
 
 describe('CreatePost UseCases', () => {
   let postRepo: IPostRepository
   let postValidator: IValidator<Post>
   let createPost: CreatePost
-  let idGenerator: IIdGenerator
 
   beforeEach(() => {
     postRepo = {
@@ -24,11 +22,8 @@ describe('CreatePost UseCases', () => {
       validate: jest.fn().mockReturnValue([])
     }
 
-    idGenerator = {
-      generate: jest.fn()
-    }
 
-    createPost = new CreatePost(postRepo, idGenerator, postValidator)
+    createPost = new CreatePost(postRepo, postValidator)
   })
 
   it("should create a post with valid data", async () => {

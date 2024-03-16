@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { UuidIdGenerator } from "../../../core/services/UuidIdGenerator";
 import { CreatePostController } from "../controllers/CreatePostController";
 import { ListAllPostsController } from "../controllers/ListAllPostsController";
 import { PostRepository } from "../repositories/PostRepository";
@@ -8,9 +7,8 @@ import { ListAllPosts } from "../useCases/ListAllPosts";
 import { PostValidator } from "../valiators/PostValidator";
 
 const postRepository = new PostRepository()
-const idGenerator = new UuidIdGenerator()
 const validator = new PostValidator()
-const createPostUseCase = new CreatePost(postRepository, idGenerator, validator)
+const createPostUseCase = new CreatePost(postRepository, validator)
 const listAllPostsUseCase = new ListAllPosts(postRepository)
 
 const createPostController = new CreatePostController(createPostUseCase)
