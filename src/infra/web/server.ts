@@ -1,9 +1,10 @@
 import express from "express"
 import config from "../config"
-import routes from "./routes"
 import helmet from "helmet"
 import cors from "cors"
 import prisma from "../db"
+import errorHandler from "../../core/error/errorHandler"
+import { routes } from "./routes"
 
 
 export const startServer = () => {
@@ -13,6 +14,8 @@ export const startServer = () => {
   app.use(cors())
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
+
+  app.use(errorHandler)
   
   app.use('/api', routes)
   

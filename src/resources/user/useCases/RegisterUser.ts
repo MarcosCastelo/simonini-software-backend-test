@@ -15,7 +15,12 @@ export class RegisterUser {
   ) {}
 
   async execute(request: IRegisterUserRequest): Promise<User> {
-    const validationErros = this._userValidator.validate(request)
+    const id = this._idGenerator.generate()
+    const encryptedPassword = await this._passwordEncryptor.encrypt(request.password)
+
+    const user = new User(id, request.name, request.email, encryptedPassword)
+
+    const validationErros = this._userValidator.validate(user)
 
     if (validationErros.length > 0) {
       throw new Error(validationErros.join(' '))
@@ -25,10 +30,6 @@ export class RegisterUser {
     if (existingUser) {
       throw new Error('User with this email already exists.')
     }
-
-    const id = this._idGenerator.generate()
-    const encryptedPassword = await this._passwordEncryptor.encrypt(request.password)
-    const user = new User(id, request.name, request.email, encryptedPassword)
 
     return this._userRepository.createUser(user)
   }

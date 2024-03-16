@@ -1,8 +1,8 @@
 import { Router } from 'express'
+import { postRoutes } from '../../../resources/post/routes/postRoutes'
+
 const router = Router()
 
-router.get('/', (req, res) => {
-  res.json({})
-})
+router.use('/posts', postRoutes)
 
-export default router
+export { router as routes }

@@ -64,12 +64,12 @@ describe('RegisterUser UseCase', () => {
     const request = {
       name: 'New User',
       email: 'user@email.com',
-      password: 'passowrd'
+      password: 'password'
     }
 
     await expect(registerUser.execute(request))
 
-    expect(userValidator.validate).toHaveBeenCalledWith(request)
+    expect(userValidator.validate).toHaveBeenCalledWith(expect.any(User))
   })
 
   it('should not register user with invalid data', async () => {
