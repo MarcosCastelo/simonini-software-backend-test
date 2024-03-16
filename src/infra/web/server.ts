@@ -6,6 +6,8 @@ import prisma from "../db"
 import errorHandler from "../../core/error/errorHandler"
 import { routes } from "./routes"
 
+import swaggerUi from "swagger-ui-express";
+import swaggerOutput from "../config/swagger_output.json";
 
 export const startServer = () => {
   const app = express()
@@ -14,8 +16,10 @@ export const startServer = () => {
   app.use(cors())
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-
+  
   app.use(errorHandler)
+  
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
   
   app.use('/api', routes)
   
