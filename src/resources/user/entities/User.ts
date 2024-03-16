@@ -13,4 +13,9 @@ export class User {
   setPassword(newPassword: string) {
     this._password = newPassword
   }
+
+  public toSafe() {
+    const { _password, ...safeData } = this
+    return safeData
+  }
 }

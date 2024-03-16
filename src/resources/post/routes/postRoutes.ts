@@ -5,6 +5,7 @@ import { PostRepository } from "../repositories/PostRepository";
 import { CreatePost } from "../useCases/CreatePost";
 import { ListAllPosts } from "../useCases/ListAllPosts";
 import { PostValidator } from "../valiators/PostValidator";
+import { verifyTokenMiddleware } from "../../../core/auth/verifyTokenMiddleware";
 
 const postRepository = new PostRepository()
 const validator = new PostValidator()
@@ -16,7 +17,7 @@ const listAllPostsController = new ListAllPostsController(listAllPostsUseCase)
 
 const router = Router()
 
-router.post('/', (req, res) => createPostController.handle(req, res))
+router.post('/', verifyTokenMiddleware ,(req, res) => createPostController.handle(req, res))
 router.get('/', (req, res) => listAllPostsController.handle(req, res))
 
 export { router as postRoutes }

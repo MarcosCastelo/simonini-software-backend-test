@@ -9,12 +9,14 @@ export class ListAllPostsController {
       const { page, limit } = request.query
       const paginationParams = {
         page: parseInt(page as string) || 1,
-        limit: parseInt(limit as string) || 1,
+        limit: parseInt(limit as string) || 10,
       }
 
       const posts = await this.lsitAllPostUseCase.execute(paginationParams)
 
-      return response.status(200).json(posts)
+      return response.status(200).json({        
+        posts
+      })
     } catch (error) {
       return response.status(400).json({
         message: error || 'Unexpected error.',
