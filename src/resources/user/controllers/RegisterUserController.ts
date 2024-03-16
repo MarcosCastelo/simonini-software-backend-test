@@ -10,7 +10,7 @@ export class RegisterUserController {
     try {
       const { name, email, password } = request.body
       const user = await this.registerUserUseCase.execute({name, email, password})
-      return response.status(201).json(user)
+      return response.status(201).json(user.toSafe())
     } catch (error: any) {
       return response.status(400).json({ message: error.message })
     }

@@ -9,7 +9,8 @@ export class CreatePostController {
 
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const { title, content, userId } = request.body
+      const { title, content } = request.body
+      const userId = response.locals.user.userId
 
       const post: Post = await this.createPostUseCase.execute({ title, content, userId })
 

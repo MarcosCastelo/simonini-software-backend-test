@@ -6,10 +6,10 @@ describe("UserValidator", () => {
 
   it("should return no errors for valid data", () => {
     const data = new User(
-      '1',
       'User',
       'user@mail.com',
-      'password'
+      'password',
+      '1',
     )
     const errors = userValidator.validate(data)
     expect(errors).toHaveLength(0)
@@ -17,10 +17,10 @@ describe("UserValidator", () => {
 
   it("should return a invalid name error", () => {
     const data = new User(
-      '1',
       '',
       'user@mail.com',
-      'password'
+      'password',
+      '1',
     )
     const errors = userValidator.validate(data)
     expect(errors).toContain("The name must be between 2 and 50 characters.")
@@ -28,10 +28,10 @@ describe("UserValidator", () => {
 
   it("should return a email error", () => {
     const data = new User(
-      '1',
       'User',
       '',
-      'password'
+      'password',
+      '1',
     )
     const errors = userValidator.validate(data)
     expect(errors).toContain("The email provided is invalid.")
@@ -39,10 +39,10 @@ describe("UserValidator", () => {
 
   it("should return password error", () => {
     const data = new User(
-      '1',
       'User',
       'user@mail.com',
-      '123'
+      '123',
+      '1',
     )
     const errors = userValidator.validate(data)
     expect(errors).toContain("The password must be at least 6 characters long.")

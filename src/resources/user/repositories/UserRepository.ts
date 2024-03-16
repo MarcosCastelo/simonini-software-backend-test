@@ -32,10 +32,10 @@ export class UserRepository implements IUserRepository {
       })
 
       return new User(
-        updatedUser.id,
         updatedUser.name,
         updatedUser.email,
         updatedUser.password,
+        updatedUser.id,
       )
   }
 
@@ -49,7 +49,7 @@ export class UserRepository implements IUserRepository {
       }
 
       return new User(
-        user.id, user.name, user.email, user.password
+        user.name, user.email, user.password, user.id
       )
   }
 
@@ -64,7 +64,7 @@ export class UserRepository implements IUserRepository {
       }
 
       return new User(
-        user.id, user.name, user.email, user.password
+        user.name, user.email, user.password, user.id
       )
   }
 
@@ -78,10 +78,10 @@ export class UserRepository implements IUserRepository {
     }
 
     return new User (
-      deletedUser.id,
       deletedUser.name,
       deletedUser.email,
-      deletedUser.password
+      deletedUser.password,
+      deletedUser.id,
     )
   }
 }
