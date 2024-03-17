@@ -1,51 +1,88 @@
-# Teste de Backend com Node.js, Express, e Typescript
+# # Teste de Backend com Node.js, Express, e Typescript
 
-## Descrição
+## Introdução
 
-Este teste é projetado para avaliar habilidades em desenvolver uma API RESTful usando Node.js, Express, e Typescript. O foco está em permitir o registro de usuários e possibilitar que cada usuário crie posts. O projeto utilizará MongoDB como banco de dados e o Prisma como ORM. Além disso, o projeto deve ser configurável para execução em um ambiente Dockerizado, utilizando `docker compose`, incluindo o banco de dados. Os testes unitários devem ser implementados usando Jest. A escolha da arquitetura do projeto é deixada ao seu critério, permitindo a liberdade de aplicar a abordagem que considerar mais adequada.
+Este documento tem como objetivo fornecer uma visão geral do projeto de backend desenvolvido como parte de um teste técnico. A aplicação é uma API RESTful construída com Node.js, Express e TypeScript e permite o registro de usuários e criação de posts por usuários autenticados.
 
-## Instruções
 
-Você deverá criar um fork deste projeto, e desenvolver em cima do seu fork. Use o README principal do seu repositório para nos contar como foi resolver seu teste, as decisões tomadas, como você organizou e separou seu código e, principalmente, as instruções de como rodar seu projeto e se você conseguir explicar como fazer isso, você já começou bem!
+## Arquitetura do Projeto
 
-## Requisitos Funcionais
+Este projeto adota uma arquitetura orientada a recursos, o que significa que cada recurso do sistema (como `usuários` e `posts`) é organizado em um módulo separado que encapsula todas as funcionalidades relacionadas. Essa estrutura facilita a adição de novos recursos e a manutenção do código existente. A seguir, detalhamos os componentes de cada recurso:
 
-1. **Cadastro de Usuários:**
-   - Implementar um endpoint para o cadastro de novos usuários.
-   - Os usuários devem fornecer um nome, email (único no sistema) e senha para o registro.
+- `Entidades`: São as classes que modelam o domínio do negócio e correspondem a tabelas no banco de dados.
+- `UseCases`: Contêm a lógica de negócio específica para cada recurso, promovendo a reutilização de código e facilitando testes.
+- `Repositórios`: Abstraem toda a lógica de acesso ao banco de dados, permitindo que os use cases interajam com a base de dados de maneira indireta.
+- `Controladores`: São responsáveis por receber as requisições HTTP, delegar a execução dos casos de uso e retornar as respostas ao cliente.
+- `Rotas`: Definem os endpoints da API vinculados aos métodos dos controladores, organizados de acordo com o recurso que representam.
 
-2. **Autenticação:**
-   - Implementar autenticação JWT para os usuários, gerando um token JWT no login.
+Cada recurso possui seu próprio diretório dentro do projeto, e dentro dele, estão organizados subdiretórios para entidades, casos de uso, repositórios, controladores e rotas. Esta abordagem garante uma organização clara e uma separação de responsabilidades, otimizando o desenvolvimento e facilitando a escala da aplicação.
 
-3. **Criação de Posts:**
-   - Permitir que usuários autenticados criem posts.
-   - Cada post deve conter um título e um corpo de texto e estar vinculado ao usuário que o criou.
+Para exemplificar:
 
-## Requisitos Não Funcionais
+- `src/resources/user/`
+  - `entities/`: Modelo de dados do usuário.
+  - `useCases/`: Lógica para criação, autenticação e outras operações relacionadas ao usuário.
+  - `repositories/`: Abstração do acesso aos dados do usuário.
+  - `controllers/`: Pontos de entrada para as requisições relacionadas a usuários.
+  - `routes/`: Definições de rotas HTTP para operações do usuário.
+- `src/resources/post/`
+  - `entities/`: Modelo de dados do post.
+  - `useCases/`: Lógica para criação e gerenciamento de posts.
+  - `repositories/`: Abstração do acesso aos dados do post.
+  - `controllers/`: Pontos de entrada para as requisições relacionadas a posts.
+  - `routes/`: Definições de rotas HTTP para operações do post.
 
-1. **Arquitetura:**
-   - A escolha da arquitetura do software fica a critério do candidato. Recomenda-se documentar a abordagem escolhida e justificar as decisões arquiteturais tomadas.
+Esta arquitetura foi escolhida por promover a modularidade e a agilidade no desenvolvimento, já que adicionar um novo recurso ou modificar um existente se torna uma tarefa de gerenciamento de um módulo específico, sem efeitos colaterais no resto da aplicação.
 
-2. **Prisma e MongoDB:**
-   - Utilizar o Prisma como ORM para interagir com o MongoDB.
 
-3. **Docker:**
-   - Fornecer um arquivo `docker-compose.yml` para orquestrar a aplicação e o MongoDB.
-   - Utilizar o comando `docker compose up` para iniciar o ambiente de desenvolvimento.
+## Configuração e Execução
 
-4. **Testes Unitários:**
-   - Implementar testes unitários usando Jest para garantir a qualidade e a correção do código.
+### Pré-requisitos
 
-## Entrega
+- Docker
+- Docker Compose
+- MongoDB
 
-- O código deve ser disponibilizado em um repositório Git (ex: GitHub, GitLab).
+### Instruções
 
-## Critérios de Avaliação
+Para configurar e executar o projeto localmente, siga os passos abaixo:
 
-- Qualidade do código e uso apropriado do Typescript.
-- Implementação dos requisitos funcionais e não funcionais.
-- Cobertura e qualidade dos testes unitários com Jest.
-- Documentação do projeto, incluindo instruções de configuração e execução.
-- A escolha e justificativa da arquitetura adotada, avaliando a adequação da solução ao problema e a eficácia em atender aos requisitos do projeto.
+1. Clone o repositório Git para o seu ambiente local.
+2. Navegue até a raiz do projeto e adicione as variáveis de ambiente em um arquivo .env, siga como exemplo o arquivo .env.example 
+3. Execute o comando `docker compose up`.
 
-Desejamos a todos sucesso e um desenvolvimento produtivo!
+## Cadastro de Usuários
+
+O endpoint para cadastro de novos usuários é `POST /users/`. Os usuários devem fornecer um `nome`, `email` e `senha`.
+
+## Autenticação
+
+O endpoint para autenticação de usuários é `POST /users/login`. Um token JWT é gerado e retornado para o usuário.
+
+## Criação de Posts
+
+Usuários autenticados podem criar posts enviando uma requisição `POST /posts` com um `title` e `content` de texto.
+
+## Testes Unitários
+
+Os testes unitários são implementados com Jest. Para executá-los, utilize o comando `npm test`.
+
+## Pontos a melhorar:
+    
+2.  **Validação de Entradas**: Adicionar mais verificações nos controllers
+    
+3.  **Gerenciamento de Erros**: Modularizar o gerenciamento de erros criando classes de Erros e suas derivadas.
+    
+4.  **Documentação da API**: Melhorar a documentação SWAGGER
+    
+5.  **Monitoramento e Logging**: Adicionar libs de logging e healthcheck    
+6.  **Testes**: Aumentar a cobertura de testes, incluindo testes de integração e testes de carga além de aumentar a cobertura de testes.
+    
+7.  **Performance**: Realizar uma análise de desempenho para identificar gargalos e otimizar o código para operações mais rápidas, especialmente se estiver trabalhando com grandes conjuntos de dados.
+    
+8.  **Automação do CI/CD**: Configurar uma pipeline de integração contínua e entrega contínua (CI/CD) para automatizar testes e deployment.
+9. 
+10.  **Caching**: Implementar caching onde apropriado para melhorar a velocidade de resposta da API.
+    
+11.  **Internacionalização e Localização (i18n e l10n)**
+   
